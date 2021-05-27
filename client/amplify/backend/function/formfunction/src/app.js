@@ -37,6 +37,23 @@ function id (){
   return Math.random().toString(36).substring(2)+Date.now().toString(36);
 }
 
+app.post('/contact',function(req,res){
+  console.log(req);
+
+  var params={
+    TableName:process.env.STORAGE_DYNAMO38FF052D_NAME,
+    Item:{
+      id:id(),
+      name:req.body.name,
+      email:req.body.email,
+      message:req.body.message
+    }
+  }
+  docClient.put(params, function(err,data){
+    if(err) res.json({err})
+    else res.json({success:'Contact created successfully'})
+  })
+});
 
 app.listen(3000, function() {
     console.log("App started")
